@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - Page AI Assistant</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Paramètres - Page AI Assistant</h1>
+      <p class="subtitle">Ajoute tes clés API IA. Elles sont stockées localement, jamais envoyées ailleurs.</p>
+    </header>
+
+    <div class="settings-grid">
+      <!-- OpenAI -->
+      <div class="settings-card">
+        <h2>🤖 OpenAI</h2>
+        <p class="info">Utilise les modèles GPT-4, GPT-3.5, etc.</p>
+        <label for="openaiKey">Clé API OpenAI :</label>
+        <input 
+          type="password" 
+          id="openaiKey" 
+          placeholder="sk-..." 
+          class="key-input"
+        >
+        <button class="test-btn" data-provider="openai">Tester</button>
+        <a href="https://platform.openai.com/api-keys" target="_blank" class="link-btn">Obtenir une clé</a>
+      </div>
+
+      <!-- Anthropic -->
+      <div class="settings-card">
+        <h2>🧠 Anthropic</h2>
+        <p class="info">Utilise Claude, très bon pour les textes longs.</p>
+        <label for="anthropicKey">Clé API Anthropic :</label>
+        <input 
+          type="password" 
+          id="anthropicKey" 
+          placeholder="sk-ant-..." 
+          class="key-input"
+        >
+        <button class="test-btn" data-provider="anthropic">Tester</button>
+        <a href="https://console.anthropic.com/keys" target="_blank" class="link-btn">Obtenir une clé</a>
+      </div>
+
+      <!-- Mistral -->
+      <div class="settings-card">
+        <h2>✨ Mistral</h2>
+        <p class="info">Modèles open source optimisés.</p>
+        <label for="mistralKey">Clé API Mistral :</label>
+        <input 
+          type="password" 
+          id="mistralKey" 
+          placeholder="..." 
+          class="key-input"
+        >
+        <button class="test-btn" data-provider="mistral">Tester</button>
+        <a href="https://console.mistral.ai/api-keys/" target="_blank" class="link-btn">Obtenir une clé</a>
+      </div>
+
+      <!-- Google -->
+      <div class="settings-card">
+        <h2>🔮 Google Gemini</h2>
+        <p class="info">API Gemini de Google.</p>
+        <label for="googleKey">Clé API Google :</label>
+        <input 
+          type="password" 
+          id="googleKey" 
+          placeholder="..." 
+          class="key-input"
+        >
+        <button class="test-btn" data-provider="google">Tester</button>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="link-btn">Obtenir une clé</a>
+      </div>
+    </div>
+
+    <!-- Backend URL -->
+    <div class="backend-section">
+      <h2>⚙️ Configuration Backend</h2>
+      <p class="info">URL de ton serveur backend (optionnel, défaut: localhost:3000)</p>
+      <label for="backendUrl">URL Backend :</label>
+      <input 
+        type="text" 
+        id="backendUrl" 
+        placeholder="http://localhost:3000" 
+        class="url-input"
+      >
+    </div>
+
+    <!-- Privacy Info -->
+    <div class="privacy-notice">
+      <h3>🔒 Privacy & Sécurité</h3>
+      <ul>
+        <li>✅ Tes clés API ne quittent jamais ton ordinateur (stockage local).</li>
+        <li>✅ Le contenu des pages est envoyé à ton serveur backend, pas à des tiers.</li>
+        <li>✅ Les conversations sont stockées localement.</li>
+        <li>✅ Aucun tracking, cookies, ou données envoyées à nos serveurs.</li>
+        <li>⚠️ Si tu utilises un backend public, assure-toi qu'il est sécurisé.</li>
+      </ul>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button id="saveBtn" class="save-btn">💾 Enregistrer</button>
+      <button id="clearBtn" class="clear-btn">🗑️ Effacer tout</button>
+    </div>
+
+    <!-- Statut -->
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

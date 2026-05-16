@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page AI Assistant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header avec paramètres et supprimer conv -->
+    <div class="header">
+      <h1>Page AI</h1>
+      <div class="header-actions">
+        <button id="settingsBtn" class="icon-btn" title="Paramètres">⚙️</button>
+        <button id="deleteConvBtn" class="icon-btn delete-btn" title="Supprimer cette conversation">🗑️</button>
+      </div>
+    </div>
+
+    <!-- Sélection de l'IA -->
+    <div class="ai-selector">
+      <label for="aiProvider">IA :</label>
+      <select id="aiProvider">
+        <option value="">-- Choisir une IA --</option>
+        <option value="openai">OpenAI (GPT-4)</option>
+        <option value="anthropic">Anthropic (Claude)</option>
+        <option value="mistral">Mistral</option>
+        <option value="google">Google Gemini</option>
+      </select>
+    </div>
+
+    <!-- Actions préfaites -->
+    <div class="quick-actions">
+      <button class="action-btn" data-action="summarize">📝 Résumer</button>
+      <button class="action-btn" data-action="explain">💡 Expliquer</button>
+      <button class="action-btn" data-action="extract">🎯 Points clés</button>
+      <button class="action-btn" data-action="translate">🌐 Traduire (EN)</button>
+    </div>
+
+    <!-- Zone de conversation -->
+    <div class="conversation-container">
+      <div id="conversationArea" class="conversation-area"></div>
+    </div>
+
+    <!-- Zone de saisie -->
+    <div class="input-container">
+      <textarea 
+        id="userInput" 
+        placeholder="Écris ta question..." 
+        rows="3"
+      ></textarea>
+      <button id="sendBtn" class="send-btn">Envoyer</button>
+    </div>
+
+    <!-- Indicateur de chargement -->
+    <div id="loadingIndicator" class="loading hidden">
+      <span class="spinner"></span>
+      <span>IA répond...</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
