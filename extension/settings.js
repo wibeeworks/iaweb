@@ -10,7 +10,7 @@ class SettingsManager {
   }
 
   async loadSettings() {
-    const settings = await chrome.storage.local.get([
+    const settings = await browser.storage.local.get([
       'openaiKey',
       'anthropicKey',
       'mistralKey',
@@ -46,14 +46,14 @@ class SettingsManager {
       backendUrl: document.getElementById('backendUrl').value
     };
 
-    await chrome.storage.local.set(settings);
+    await browser.storage.local.set(settings);
     this.showStatus('✅ Paramètres enregistrés!', 'success');
   }
 
   async clearAll() {
     if (!confirm('Êtes-vous sûr ? Toutes tes clés API seront supprimées.')) return;
 
-    await chrome.storage.local.clear();
+    await browser.storage.local.clear();
     await this.loadSettings();
     this.showStatus('✅ Tout a été effacé.', 'success');
   }

@@ -1,0 +1,107 @@
+// services/aiProvider.js
+const config = require('../config');
+const logger = require('../utils/logger');
+
+const { OpenAI } = require('openai');
+const Anthropic = require('@anthropic-ai/sdk');
+const { Mistral } = require('@mistralai/mistralai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+class AIProvider {
+  constructor() {}
+
+  getOpenAI() {
+    if (!config.apiKeys.openai) throw new Error('Clé OpenAI manquante');
+    return new OpenAI({ apiKey: config.apiKeys.openai });
+  }
+
+  getAnthropic() {
+    if (!config.apiKeys.anthropic) throw new Error('Clé Anthropic manquante');
+    return new Anthropic({ apiKey: config.apiKeys.anthropic });
+  }
+
+  getMistral() {
+    if (!config.apiKeys.mistral) throw new Error('Clé Mistral manquante');
+    return new Mistral({ apiKey: config.apiKeys.mistral });
+  }
+
+  getGoogle() {
+    if (!config.apiKeys.google) throw new Error('Clé Google manquante');
+    return new GoogleGenerativeAI(config.apiKeys.google);
+  }
+
+  async generateResponse(provider, message, systemPrompt, history = []) {
+    switch (provider) {
+      case 'openai':
+        return await this.generateOpenAI(message, systemPrompt, history);
+      case 'anthropic':
+        return await this.generateAnthropic(message, systemPrompt, history);
+      case 'mistral':
+        return await this.generateMistral(message, systemPrompt, history);
+      case 'google':
+        return await this.generateGoogle(message, systemPrompt, history);
+      default:
+        throw new Error(`Provider inconnu : ${provider}`);
+    }
+  }
+
+  async generateOpenAI(message, systemPrompt, history) {
+    const client = this.getOpenAI();
+    const response = await client.chat.completions.create({
+      model: config.models.openai,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...history,
+        { role: 'user', content: message }
+      ],
+      temperature: 0.7,
+      max_tokens: 1000
+    });
+    return response.choices[0].message.content;
+  }
+
+  async generateAnthropic(message, systemPrompt, history) {
+    const client = this.getAnthropic();
+    const response = await client.messages.create({
+      model: config.models.anthropic,
+      max_tokens: 1000,
+      system: systemPrompt,
+      messages: [
+        ...history,
+        { role: 'user', content: message }
+      ]
+    });
+    return response.content[0].text;
+  }
+
+  async generateMistral(message, systemPrompt, history) {
+    const client = this.getMistral();
+    const response = await client.chat.complete({
+      model: config.models.mistral,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...history,
+        { role: 'user', content: message }
+      ]
+    });
+    return response.choices[0].message.content;
+  }
+
+  async generateGoogle(message, systemPrompt, history) {
+    const client = this.getGoogle();
+    const model = client.getGenerativeModel({ model: config.models.google });
+    const chat = model.startChat({
+      history: history.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.content }]
+      })),
+      generationConfig: { maxOutputTokens: 1000 }
+    });
+    const result = await chat.sendMessage(
+      `${systemPrompt}\n\n${message}`
+    );
+    return result.response.text();
+  }
+}
+
+module.exports = new AIProvider();
